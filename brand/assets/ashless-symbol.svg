@@ -1,0 +1,20 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    The Ashless Mark — "The Broken Loop". Habits run on a loop: cue,
+    routine, reward. This is that loop, drawn almost whole and deliberately
+    left open — dull ash-grey where it used to close on itself, resolving
+    through amber-bronze into brand gold right at the break, where it
+    doesn't close anymore. Not a checkmark, not a cigarette or ember — the
+    shape itself is the idea: a habit loop, interrupted on purpose.
+  -->
+  <g fill="none" stroke-width="26" stroke-linecap="butt">
+    <path d="M 185.25 89.57  A 72 72 0 0 1 189.54 138.63" stroke="#8A8074"/>
+    <path d="M 189.54 138.63 A 72 72 0 0 1 161.30 178.98" stroke="#968368"/>
+    <path d="M 161.30 178.98 A 72 72 0 0 1 113.72 191.73" stroke="#A2865C"/>
+    <path d="M 113.72 191.73 A 72 72 0 0 1 69.09 170.91"  stroke="#AE8A50"/>
+    <path d="M 69.09 170.91  A 72 72 0 0 1 48.27 126.28"  stroke="#BC934A"/>
+    <path d="M 48.27 126.28  A 72 72 0 0 1 61.02 78.70"   stroke="#CA9D46"/>
+    <path d="M 61.02 78.70   A 72 72 0 0 1 101.37 50.46"  stroke="#D9A841"/>
+    <path d="M 101.37 50.46  A 72 72 0 0 1 150.43 54.75"  stroke="#E7B23D"/>
+  </g>
+</svg>

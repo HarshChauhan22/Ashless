@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 120" width="340" height="120">
+  <!-- Combination mark: symbol (left) + wordmark (right), single baseline lockup -->
+  <g transform="translate(0,0)">
+    <rect x="20" y="38" width="80" height="62" rx="18" fill="none" stroke="#1F1B16" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M42 38 L60 6 L78 38" fill="none" stroke="#1F1B16" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="60" cy="70" r="14" fill="#E7B23D"/>
+  </g>
+  <g transform="translate(130,15)">
+    <text x="0" y="65" font-family="'Poppins', 'General Sans', 'Cabinet Grotesk', 'Segoe UI', sans-serif" font-weight="700" font-size="64" fill="#1F1B16" letter-spacing="-1">jeb</text>
+    <circle cx="186" cy="70" r="9" fill="#E7B23D"/>
+  </g>
+</svg>

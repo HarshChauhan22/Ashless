@@ -1,0 +1,53 @@
+# Ashless monorepo — mobile/ (Expo/React Native), backend/ (NestJS/Prisma),
+# webapp/ (earlier Next.js prototype, kept as reference).
+
+# --- Dependencies ---
+node_modules/
+
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Expo / React Native (mobile/) ---
+.expo/
+.expo-shared/
+dist/
+web-build/
+expo-env.d.ts
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.metro-health-check*
+/ios
+/android
+
+# --- Next.js (webapp/) ---
+.next/
+out/
+
+# --- NestJS / Prisma (backend/) ---
+dist/
+build/
+
+# --- Logs ---
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.log
+
+# --- TypeScript ---
+*.tsbuildinfo
+
+# --- Editor / OS ---
+.DS_Store
+.vscode/
+.idea/
+*.pem
+
+# --- Local tooling ---
+.claude/
+.scratch/

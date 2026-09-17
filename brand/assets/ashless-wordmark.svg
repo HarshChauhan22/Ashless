@@ -1,0 +1,20 @@
+<svg width="420" height="160" viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Lowercase "ashless" — approachable, conversational, not a clinical
+    all-caps acronym (same convention as the prior "jeb" wordmark). Set in a
+    bold rounded geometric sans (Poppins/Cabinet Grotesk direction, per
+    visual-identity.md's brand-surface type choice — falls back to a system
+    sans wherever those aren't loaded). A small gold dot after the word
+    carries over the same device the "jeb." wordmark used: a satisfied full
+    stop that doubles as the coin/value the name is about.
+  -->
+  <text
+    x="0" y="112"
+    font-family="'Cabinet Grotesk', 'Poppins', 'General Sans', -apple-system, sans-serif"
+    font-weight="700"
+    font-size="96"
+    letter-spacing="-2"
+    fill="#1F1B16"
+  >ashless</text>
+  <circle cx="378" cy="112" r="13" fill="#E7B23D"/>
+</svg>

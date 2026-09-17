@@ -1,0 +1,28 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    App icon: rounded-square field carrying the brand's signature gradient
+    (warm ash-charcoal at top-left easing into gold at bottom-right — the
+    same "ash resolving into value" story as the symbol, now told across
+    the whole field), with the broken-loop mark reversed to flat cream and
+    centered. Scaled to sit inside Android's adaptive-icon ~66% safe zone.
+  -->
+  <defs>
+    <linearGradient id="ashlessIconBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4B4640"/>
+      <stop offset="55%" stop-color="#8A7A52"/>
+      <stop offset="100%" stop-color="#E7B23D"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="240" height="240" rx="52" fill="url(#ashlessIconBg)"/>
+  <g transform="translate(120 120) scale(0.82) translate(-120 -120)"
+     fill="none" stroke="#FFF9F0" stroke-width="24" stroke-linecap="butt">
+    <path d="M 185.25 89.57  A 72 72 0 0 1 189.54 138.63"/>
+    <path d="M 189.54 138.63 A 72 72 0 0 1 161.30 178.98"/>
+    <path d="M 161.30 178.98 A 72 72 0 0 1 113.72 191.73"/>
+    <path d="M 113.72 191.73 A 72 72 0 0 1 69.09 170.91"/>
+    <path d="M 69.09 170.91  A 72 72 0 0 1 48.27 126.28"/>
+    <path d="M 48.27 126.28  A 72 72 0 0 1 61.02 78.70"/>
+    <path d="M 61.02 78.70   A 72 72 0 0 1 101.37 50.46"/>
+    <path d="M 101.37 50.46  A 72 72 0 0 1 150.43 54.75"/>
+  </g>
+</svg>

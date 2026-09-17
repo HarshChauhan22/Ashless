@@ -1,0 +1,22 @@
+<svg width="560" height="160" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+  <!-- Horizontal lockup: symbol at left, wordmark at right, shared baseline. -->
+  <g transform="translate(0, 8) scale(0.6)" fill="none" stroke-width="26" stroke-linecap="butt">
+    <path d="M 185.25 89.57  A 72 72 0 0 1 189.54 138.63" stroke="#8A8074"/>
+    <path d="M 189.54 138.63 A 72 72 0 0 1 161.30 178.98" stroke="#968368"/>
+    <path d="M 161.30 178.98 A 72 72 0 0 1 113.72 191.73" stroke="#A2865C"/>
+    <path d="M 113.72 191.73 A 72 72 0 0 1 69.09 170.91"  stroke="#AE8A50"/>
+    <path d="M 69.09 170.91  A 72 72 0 0 1 48.27 126.28"  stroke="#BC934A"/>
+    <path d="M 48.27 126.28  A 72 72 0 0 1 61.02 78.70"   stroke="#CA9D46"/>
+    <path d="M 61.02 78.70   A 72 72 0 0 1 101.37 50.46"  stroke="#D9A841"/>
+    <path d="M 101.37 50.46  A 72 72 0 0 1 150.43 54.75"  stroke="#E7B23D"/>
+  </g>
+  <text
+    x="150" y="112"
+    font-family="'Cabinet Grotesk', 'Poppins', 'General Sans', -apple-system, sans-serif"
+    font-weight="700"
+    font-size="96"
+    letter-spacing="-2"
+    fill="#1F1B16"
+  >ashless</text>
+  <circle cx="528" cy="112" r="13" fill="#E7B23D"/>
+</svg>

@@ -1,0 +1,191 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+//
+// Right-sized subset of docs/architecture/database-schema.md for the first
+// real (Postgres-backed) local build — DECISIONS.md D-012. Table/column
+// names match the documented schema exactly (via @@map/@map) so a later
+// migration to the full production schema (savings_destinations, payout
+// legs, webhook_events, fraud/reconciliation tables) is additive, not a
+// rename. What's deliberately NOT here yet, because it depends on an actual
+// payment-provider relationship this project doesn't have (Phase 6):
+// savings_destinations, payout-leg columns on payment_transactions,
+// webhook_events, idempotency_keys (generic interceptor table — payment
+// idempotency is enforced directly on payment_transactions instead),
+// refresh_tokens (real JWT rotation), device_tokens, audit_log,
+// analytics_events (client-side analytics still goes through the same
+// trackEvent() console-log stub the web prototype used).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  phoneNumber     String   @unique @map("phone_number")
+  phoneVerifiedAt DateTime? @map("phone_verified_at")
+
+  // User Details screen fields (added 2026-09-16, requested addition) —
+  // collected once, right after login, before Home.
+  firstName       String?  @map("first_name")
+  lastName        String?  @map("last_name")
+  email           String?
+  age             Int?
+  gender          String?
+  // Set the moment the User Details screen is submitted — the streak
+  // counter anchors to this instant (not account creation) so the tracker
+  // genuinely "starts from Day 1" right after onboarding, per the same
+  // request. Falls back to createdAt for any user who never has this set.
+  onboardingCompletedAt DateTime? @map("onboarding_completed_at")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  smokingProfiles  SmokingProfile[]
+  cravingSessions  CravingSession[]
+  paymentTxns      PaymentTransaction[]
+  savingsTxns      SavingsTransaction[]
+  savingsGoals     SavingsGoal[]
+  aiMessages       AiMessage[]
+  balance          UserSavingsBalance?
+
+  @@map("users")
+}
+
+model SmokingProfile {
+  id                 String    @id @default(uuid())
+  userId             String    @map("user_id")
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandLabel         String    @map("brand_label")
+  pricingMode        String    @default("pack") @map("pricing_mode") // 'pack' | 'single_stick'
+  packPricePaise     BigInt?   @map("pack_price_paise")
+  packSize           Int?      @map("pack_size")
+  costPerStickPaise  BigInt    @map("cost_per_stick_paise")
+  isPrimary          Boolean   @default(false) @map("is_primary")
+  lastUsedAt         DateTime? @map("last_used_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  paymentTxns PaymentTransaction[]
+
+  @@index([userId])
+  @@map("smoking_profiles")
+}
+
+model CigaretteBrandReference {
+  id          String   @id @default(uuid())
+  displayName String   @unique @map("display_name")
+  sortOrder   Int      @default(0) @map("sort_order")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("cigarette_brand_reference")
+}
+
+model CravingSession {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startedAt       DateTime  @default(now()) @map("started_at")
+  endedAt         DateTime? @map("ended_at")
+  intensity       String?   // 'mild' | 'strong' | 'overwhelming' (kept as the web prototype's scale, not the 1-10 doc scale, since no screen collects a 1-10 value yet)
+  trigger         String?
+  outcome         String?   // 'resisted' | 'smoked' | 'simulated_purchase' | 'abandoned' | 'unresolved'
+  copingAction    String?   @map("coping_action")
+  linkedPaymentId String?   @map("linked_payment_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId, startedAt])
+  @@map("craving_sessions")
+}
+
+model PaymentTransaction {
+  id                       String    @id @default(uuid())
+  userId                   String    @map("user_id")
+  user                     User      @relation(fields: [userId], references: [id])
+  smokingProfileId         String    @map("smoking_profile_id")
+  smokingProfile           SmokingProfile @relation(fields: [smokingProfileId], references: [id])
+  unitPricePaiseSnapshot   BigInt    @map("unit_price_paise_snapshot")
+  quantity                 Int
+  amountPaise              BigInt    @map("amount_paise") // server-computed, never client-supplied
+  currency                 String    @default("INR")
+
+  provider          String   @default("mock") // 'mock' until a real PA (Razorpay/Cashfree) is wired in Phase 6
+  providerOrderId   String   @map("provider_order_id")
+  providerPaymentId String?  @map("provider_payment_id")
+
+  status         String  @default("created") @map("status") // created -> pending -> succeeded | failed | cancelled
+  failureReason  String? @map("failure_reason")
+  idempotencyKey String  @map("idempotency_key")
+
+  verifiedAt DateTime? @map("verified_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  savingsTxn SavingsTransaction?
+
+  @@unique([provider, providerOrderId])
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt])
+  @@map("payment_transactions")
+}
+
+model SavingsTransaction {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  user              User     @relation(fields: [userId], references: [id])
+  sequenceNo        BigInt   @default(autoincrement()) @map("sequence_no")
+  entryType         String   @map("entry_type") // 'credit' | 'debit' | 'reversal' | 'adjustment'
+  amountPaise       BigInt   @map("amount_paise")
+  balanceAfterPaise BigInt   @map("balance_after_paise")
+  sourceType        String   @map("source_type") // 'payment' | 'admin_adjustment' | 'refund_reversal'
+  sourcePaymentId   String?  @unique @map("source_payment_id")
+  sourcePayment     PaymentTransaction? @relation(fields: [sourcePaymentId], references: [id])
+  goalId            String?  @map("goal_id")
+  description       String?
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([userId, sequenceNo])
+  @@map("savings_transactions")
+}
+
+model UserSavingsBalance {
+  userId        String   @id @map("user_id")
+  user          User     @relation(fields: [userId], references: [id])
+  balancePaise  BigInt   @default(0) @map("balance_paise")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("user_savings_balance")
+}
+
+model AiMessage {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   // 'user' | 'assistant'
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@map("ai_messages")
+}
+
+model SavingsGoal {
+  id                 String    @id @default(uuid())
+  userId             String    @map("user_id")
+  user               User      @relation(fields: [userId], references: [id])
+  title              String
+  targetAmountPaise  BigInt    @map("target_amount_paise")
+  status             String    @default("active") // active | completed | abandoned
+  completedAt        DateTime? @map("completed_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId, status])
+  @@map("savings_goals")
+}

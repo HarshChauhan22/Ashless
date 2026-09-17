@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 90" width="220" height="90">
+  <!-- Wordmark: lowercase "jeb" + kept-coin full stop -->
+  <text x="10" y="65" font-family="'Poppins', 'General Sans', 'Cabinet Grotesk', 'Segoe UI', sans-serif" font-weight="700" font-size="64" fill="#1F1B16" letter-spacing="-1">jeb</text>
+  <circle cx="196" cy="70" r="9" fill="#E7B23D"/>
+</svg>
